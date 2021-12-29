@@ -1,0 +1,13 @@
+﻿  simulator.c
+c:\users\user\source\repos\comp_architucture_project\comp_architucture_project\simulator.c(504): warning C4047: '=': 'int' differs in levels of indirection from 'int *'
+c:\users\user\source\repos\comp_architucture_project\comp_architucture_project\simulator.c(514): warning C4047: '=': 'int' differs in levels of indirection from 'int *'
+c:\users\user\source\repos\comp_architucture_project\comp_architucture_project\simulator.c(563): warning C4047: '=': 'int' differs in levels of indirection from 'int *'
+c:\users\user\source\repos\comp_architucture_project\comp_architucture_project\simulator.c(600): warning C4047: '=': 'int' differs in levels of indirection from 'int *'
+c:\users\user\source\repos\comp_architucture_project\comp_architucture_project\simulator.c(610): warning C4047: '=': 'int' differs in levels of indirection from 'int *'
+c:\users\user\source\repos\comp_architucture_project\comp_architucture_project\simulator.c(649): warning C4047: '=': 'int' differs in levels of indirection from 'int *'
+c:\users\user\source\repos\comp_architucture_project\comp_architucture_project\simulator.c(838): warning C4047: 'function': 'int **' differs in levels of indirection from 'int [64][4]'
+c:\users\user\source\repos\comp_architucture_project\comp_architucture_project\simulator.c(838): warning C4024: 'read_miss_tran': different types for formal and actual parameter 6
+c:\users\user\source\repos\comp_architucture_project\comp_architucture_project\simulator.c(860): warning C4047: 'function': 'int **' differs in levels of indirection from 'int [64][4]'
+c:\users\user\source\repos\comp_architucture_project\comp_architucture_project\simulator.c(860): warning C4024: 'write_miss_trans': different types for formal and actual parameter 6
+c:\users\user\source\repos\comp_architucture_project\comp_architucture_project\simulator.c(997): warning C4101: 'j': unreferenced local variable
+  comp_architucture_project.vcxproj -> C:\Users\USER\source\repos\comp_architucture_project\Debug\comp_architucture_project.exe
