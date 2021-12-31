@@ -20,18 +20,25 @@ typedef struct node {
 } node_t;
 
 void push(node_t* head, int val) {  // adding the core who asked for bus transaction while bus is busy to the end of queue
-	if (head == NULL) {
+	if (head != NULL) {
 		head->val = val;
 		head->next = NULL;
 	}
 	else {
 		node_t* current = head;
+		if (NULL == current) {
+			printf("Push operation didn't work!\n");
+			return;
+		}
 		while (current->next != NULL) {
 			current = current->next;
 		}
 		current->next = (node_t*)malloc(sizeof(node_t));
-		current->next->val = val;
-		current->next->next = NULL;
+		if(NULL!= current->next ){
+			current->next->val = val;
+			current->next->next = NULL;
+
+		}
 	}
 }
 
@@ -42,11 +49,16 @@ void pop(node_t* head) { // popping out the head of queue witch is the core that
 	else if (head->next == NULL) {
 		free(head);
 	}
-	node_t* prev_head = head;
-	head = prev_head->next;
-	head->val = prev_head->next->val;
-	head->next = prev_head->next->next;
-	free(prev_head);
+	//TODO:Problem with the logic
+	else {
+		node_t* prev_head = head;
+		if (NULL != (prev_head)) {
+			head = prev_head->next;
+			head->val = prev_head->next->val;
+			head->next = prev_head->next->next;
+		}
+		free(prev_head);
+	}
 }
 
 node_t* queue = NULL;  // global queue so all cores can get to it
@@ -254,47 +266,55 @@ void Regs_copy(Reg* oldReg, Reg* newReg) {  // Regs copy  //
 //// **** In this part we have the create and initialize functions **** ////
 
 IF_ID* create_IF_ID() {
-	IF_ID *if_id = (IF_ID*)malloc(sizeof(IF_ID));
-	if_id->IR = 0;
-	if_id->NXT_PC = 0;
-	if_id->stall = 1;
+	IF_ID* if_id = NULL;
+	if (NULL != (if_id = (IF_ID*)malloc(sizeof(IF_ID)))) {
+		if_id->IR = 0;
+		if_id->NXT_PC = 0;
+		if_id->stall = 1;
+	}
 	return if_id;
 }
 
 ID_EX* create_ID_EX() {
-	ID_EX *id_ex = (ID_EX*)malloc(sizeof(ID_EX));
-	id_ex->IR = 0;
-	id_ex->NXT_PC = 0;
-	id_ex->IMM = 0;
-	id_ex->rd = -1;
-	id_ex->rs = -1;
-	id_ex->rt = -1;
-	id_ex->dataRs = 0;
-	id_ex->dataRt = 0;
-	id_ex->stall = 1;
+	ID_EX* id_ex = NULL;
+	if (NULL != (id_ex = (ID_EX*)malloc(sizeof(ID_EX)))) {
+		id_ex->IR = 0;
+		id_ex->NXT_PC = 0;
+		id_ex->IMM = 0;
+		id_ex->rd = -1;
+		id_ex->rs = -1;
+		id_ex->rt = -1;
+		id_ex->dataRs = 0;
+		id_ex->dataRt = 0;
+		id_ex->stall = 1;
+	}
 	return id_ex;
 }
 
 EX_MEM* create_EX_MEM() {
-	EX_MEM *ex_mem = (EX_MEM*)malloc(sizeof(EX_MEM));
-	ex_mem->IR = 0;
-	ex_mem->ALU = 0;
-	ex_mem->rt = -2;
-	ex_mem->rd = -2;
-	ex_mem->dataRt = 0;
-	ex_mem->stall = 1;
-	ex_mem->NXT_PC = 0;
+	EX_MEM* ex_mem = NULL;
+	if (NULL != (ex_mem = (EX_MEM*)malloc(sizeof(EX_MEM)))) {
+		ex_mem->IR = 0;
+		ex_mem->ALU = 0;
+		ex_mem->rt = -2;
+		ex_mem->rd = -2;
+		ex_mem->dataRt = 0;
+		ex_mem->stall = 1;
+		ex_mem->NXT_PC = 0;
+	}
 	return ex_mem;
 }
 
 MEM_WB* create_MEM_WB() {
-	MEM_WB *mem_wb = (MEM_WB*)malloc(sizeof(MEM_WB));
-	mem_wb->IR = 0;
-	mem_wb->ALU = 0;
-	mem_wb->MD = 0;
-	mem_wb->rd = -3;
-	mem_wb->stall = 1;
-	mem_wb->NXT_PC = 0;
+	MEM_WB* mem_wb = NULL;
+	if (NULL != (mem_wb = (MEM_WB*)malloc(sizeof(MEM_WB)))) {
+		mem_wb->IR = 0;
+		mem_wb->ALU = 0;
+		mem_wb->MD = 0;
+		mem_wb->rd = -3;
+		mem_wb->stall = 1;
+		mem_wb->NXT_PC = 0;
+	}
 	return mem_wb;
 }
 
@@ -313,7 +333,11 @@ Core* create_core(FILE *file){
 	ID_EX *id_ex = create_ID_EX();
 	EX_MEM *ex_mem = create_EX_MEM();
 	int i, j = 0;
-	Core *core = (Core*)malloc(sizeof(Core));
+	Core* core = NULL;
+	if (NULL == (core = (Core*)malloc(sizeof(Core)))) {
+		printf("Core allocation didn't work!\n");
+		return NULL;
+	}
 	for (i = 0; i < 16; i++)
 		core->regs[i] = 0;
 	core->pc = 0;
@@ -347,16 +371,18 @@ Core* create_core(FILE *file){
 
 Reg* create_reg(Core** core) {
 	int i;
-	Reg *reg = (Reg*)malloc(sizeof(Reg));
-	reg->bus_origid = 0;
-	reg->bus_cmd = 0;
-	reg->bus_addr = 0;
-	reg->bus_data = 0;
-	reg->Tran_clk = 0;
-	reg->bus_is_busy = 0;
-	reg->clk = 0;
-	for (i = 0; i < num_of_cores; i++) {
-		reg->core[i] = core[i];
+	Reg* reg = NULL;
+	if (NULL != (reg = (Reg*)malloc(sizeof(Reg)))) {
+		reg->bus_origid = 0;
+		reg->bus_cmd = 0;
+		reg->bus_addr = 0;
+		reg->bus_data = 0;
+		reg->Tran_clk = 0;
+		reg->bus_is_busy = 0;
+		reg->clk = 0;
+		for (i = 0; i < num_of_cores; i++) {
+			reg->core[i] = core[i];
+		}
 	}
 	return reg;
 }
